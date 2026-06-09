@@ -168,5 +168,39 @@ body{background:#0E0B08}
   </div>
 
 </div>
+<script>
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("token");
+      if (token) {
+        sessionStorage.setItem("ud_token", token);
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    })();
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const appUrls = [
+        "boveda-de-cronos-art.vercel.app",
+        "vault-of-chronos-art.vercel.app",
+        "interprete-suenos-art.vercel.app",
+        "lector-cartas-art.vercel.app",
+        "la-quiromante-art.vercel.app"
+      ];
+
+      document.querySelectorAll("a").forEach(function(link) {
+        const href = link.getAttribute("href") || "";
+        const isApp = appUrls.some(url => href.includes(url));
+        if (isApp) {
+          link.addEventListener("click", function(e) {
+            const token = sessionStorage.getItem("ud_token");
+            if (token) {
+              e.preventDefault();
+              window.open(href + "?token=" + token, "_blank");
+            }
+          });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
